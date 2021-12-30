@@ -6,6 +6,7 @@ package projfinal;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -183,6 +184,7 @@ public class Menu extends javax.swing.JFrame {
     }// GEN-LAST:event_btnTesteActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) throws IOException {// GEN-FIRST:event_btnSearchActionPerformed
+
         String link = txtLink.getText();
         boolean teste = false;
         // Coloca https:// no inicio do link caso o utilizador não o coloque
@@ -196,7 +198,15 @@ public class Menu extends javax.swing.JFrame {
 
         EDACrawler eda = new EDACrawler();
         Payload ini = eda.process(link);
-        System.out.println(ini.links);
+
+        String data1 = link;
+        ArrayList<String> data2 = ini.links;
+        String data3 = "E";
+        Object[] row = { data1, data2, data3 };
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+
+        model.addRow(row);
+
         System.out.println(ini.imgs);
     }// GEN-LAST:event_btnSearchActionPerformed
 

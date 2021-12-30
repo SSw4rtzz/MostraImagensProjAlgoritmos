@@ -21,7 +21,5 @@ public class Payload {
         links = new ArrayList<>();
         imgs = new ArrayList<>();
     }
-    
-    
-    
+
 }
