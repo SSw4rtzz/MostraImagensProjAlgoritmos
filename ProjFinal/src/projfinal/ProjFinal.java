@@ -23,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
 
 
 public class ProjFinal extends JFrame{
+    /********** CRIA TABELA ******
     public ProjFinal() throws IOException{
         
         Image image = null;
@@ -56,24 +57,33 @@ public class ProjFinal extends JFrame{
     getContentPane().add(scrollPane);
 
     
-    }
+    }*/
     
     public static void main(String[] args) throws IOException {
-        /*java.awt.EventQueue.invokeLater(new Runnable() {
+        java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Menu().setVisible(true);
             }
-        });*/
+        });
+        
+        
+        
+        
+        
         
         //URL url = new URL("https://w.wallhaven.cc/full/pk/wallhaven-pkgkkp.png");
         //Image image = ImageIO.read(url);
         
+        
+        /******* Cria tabela *******
         ProjFinal frame = new ProjFinal();
         //JLabel label = new JLabel(new ImageIcon(image));
         //frame.getContentPane().add(label, BorderLayout.CENTER);
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setSize(700, 350);
         frame.setVisible(true);
+
+        */
     }
            
 }
