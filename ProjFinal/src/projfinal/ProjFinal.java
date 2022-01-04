@@ -69,14 +69,15 @@ public class ProjFinal extends JFrame {
          * }
          * });
          */
+        
+        int level = 0;
 
         String link = "http://portal2.ipt.pt/";
-        EDACrawler eda = new EDACrawler();
-        Payload ini = eda.process(link);
+        EDACrawler eda = new EDACrawler(link);
+        Payload ini = eda.process(link, level);
 
         System.out.println(link);
         
-        int level = 0;
         level += 2; //Por causa das barras do http://
         
         String[] urlPartido = link.split("/");

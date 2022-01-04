@@ -17,13 +17,14 @@ import org.jsoup.select.Elements;
  * @author pedrodias & paulosantos
  */
 public class EDACrawler {
-
-    public EDACrawler() throws IOException {
+    Payload ini = new Payload();
+    public EDACrawler(String url) throws IOException {
+        //this(url, 1, true);
     }
 
-    public Payload process(String url) throws IOException {
+    public Payload process(String url, int level) throws IOException {
         Payload payload = new Payload();
-
+        
         if (!url.endsWith("/")) {
             url += "/";
         }
@@ -35,23 +36,25 @@ public class EDACrawler {
 
         while (aux.hasNext()) {
             String href = aux.next().attr("abs:href");
-            if (href.length() > 1) {
-                payload.links.add(href);
+            boolean inDomain = true;
+            String domain = "ipt.pt";
+            
+            if (href.length() > 1 && !ini.links.contains(href) && ((inDomain && href.endsWith(domain)) || !inDomain && href.endsWith(domain))) {
+                ini.links.add(href);
+                process(href, level + 1);
             }
         }
-        
+
         Elements imgs = doc.select("img");
         aux = imgs.iterator();
 
         while (aux.hasNext()) {
             String src = aux.next().attr("abs:src");
-            if (src.length() > 1) {
-                payload.imgs.add(src);
+            if (src.length() > 1 && !ini.imgs.contains(src)) {
+                ini.imgs.add(src);
             }
         }
-
         payload.html = doc.html();
-
         return payload;
     }
 
