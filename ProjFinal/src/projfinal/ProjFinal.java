@@ -62,14 +62,14 @@ public class ProjFinal extends JFrame {
      */
 
     public static void main(String[] args) throws IOException {
-        /*   
-         * java.awt.EventQueue.invokeLater(new Runnable() {
-         * public void run() {
-         * new Menu().setVisible(true);
-         * }
-         * });
-         */
-        
+          
+          java.awt.EventQueue.invokeLater(new Runnable() {
+          public void run() {
+          new Menu().setVisible(true);
+          }
+          });
+         
+       /* 
         int level = 0;
 
         String link = "http://portal2.ipt.pt/";

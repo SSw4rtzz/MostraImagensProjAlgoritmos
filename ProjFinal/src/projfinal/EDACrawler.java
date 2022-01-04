@@ -1,9 +1,11 @@
+package projfinal;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package projfinal;
+
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -17,13 +19,25 @@ import org.jsoup.select.Elements;
  * @author pedrodias & paulosantos
  */
 public class EDACrawler {
-    Payload ini = new Payload();
-    public EDACrawler(String url) throws IOException {
-        //this(url, 1, true);
+
+    private int level = 1;
+    private boolean repetido;
+    private Element temp;
+
+    public EDACrawler() throws IOException {
+    }
+    
+    public void linkRepetido(Payload payload, String href, int n){
+        
     }
 
     public Payload process(String url, int level) throws IOException {
         Payload payload = new Payload();
+        String[] urlInit = url.split("/");
+        
+        System.out.println(urlInit[2]); //URL HOST, ou seja www.google.com sem mais nada por exemplo
+
+        //if (level<=this.level) System.out.println("Tetse");;
         
         if (!url.endsWith("/")) {
             url += "/";
@@ -35,26 +49,45 @@ public class EDACrawler {
         Iterator<Element> aux = links.iterator();
 
         while (aux.hasNext()) {
-            String href = aux.next().attr("abs:href");
-            boolean inDomain = true;
-            String domain = "ipt.pt";
-            
-            if (href.length() > 1 && !ini.links.contains(href) && ((inDomain && href.endsWith(domain)) || !inDomain && href.endsWith(domain))) {
-                ini.links.add(href);
-                process(href, level + 1);
+            repetido = false;
+            String href = aux.next().attr("href");
+            if (href.length() > 1 &&/* payload.links.isEmpty() && */href.contains(urlInit[2])) {
+                payload.links.add(href);
+            }else{
+                for(int i = 0; i<payload.links.size(); i++){
+                    if(href.equals(payload.links.get(i)) && href.contains(urlInit[2])){
+                        repetido = true;
+                        System.out.println(payload.links.get(i));
+                    }
+                }
+                linkRepetido(payload, href, 1);
             }
+                //process(href, level+1);
+                //System.out.println("Teste - " + href + "|");
         }
-
+        
+            
         Elements imgs = doc.select("img");
         aux = imgs.iterator();
 
         while (aux.hasNext()) {
+            //temp = aux.next();
+            
             String src = aux.next().attr("abs:src");
-            if (src.length() > 1 && !ini.imgs.contains(src)) {
-                ini.imgs.add(src);
+            if (src.length() > 1 /*&& payload.imgs.isEmpty()*/) {
+                payload.imgs.add(src);
+            } else {
+                for(int i = 0; i<payload.imgs.size();i++){
+                    if(src.equals(payload.imgs.get(i))){
+                        repetido=true;
+                    }
+                }
+                linkRepetido(payload, src, 2);
             }
         }
+
         payload.html = doc.html();
+
         return payload;
     }
 
