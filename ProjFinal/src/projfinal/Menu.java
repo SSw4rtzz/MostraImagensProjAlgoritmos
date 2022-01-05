@@ -136,11 +136,17 @@ public class Menu extends javax.swing.JFrame {
         String link = txtLink.getText();
         int nivel = (int) level.getValue();
         EDACrawler eda = new EDACrawler();
-        Payload ini = eda.process(link, nivel);
+        Payload ini = new Payload();
+        
+        for(int i=1; i<=nivel;i++){
+        ini = eda.process(link, i);
+        }
+        
+        
         
         //EDACrawler eda = new EDACrawler(txtLink.getText(), level.getValue());
         
-        
+        System.out.println("Link: " + link + "\nProfundidade: " + nivel); 
         int numberImgs = ini.imgs.size();
         int numberLinks = ini.links.size();
         String msg = "Foram encontradas " + numberImgs + " imagens em " + numberLinks + " links.";
@@ -152,8 +158,8 @@ public class Menu extends javax.swing.JFrame {
         */
         
         //grid
-        for (String img : ini.imgs) {
-            /*try {
+        /*for (String img : ini.imgs) {
+            try {
             Image image = null;
             URL url = new URL(img);
             image = ImageIO.read(url);
@@ -173,8 +179,10 @@ public class Menu extends javax.swing.JFrame {
             //output.add(lbl);
             } catch (IllegalArgumentException e) {
             System.out.println("Erro: " + img);
-            }*/
-        }
+            }
+        }*/
+        
+        
          
         this.pack();
 
