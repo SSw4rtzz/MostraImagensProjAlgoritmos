@@ -51,31 +51,33 @@ public class EDACrawler {
 
         while (aux.hasNext()) {
             repetido = false;
-            String href = aux.next().attr("href");
+            String href = aux.next().attr("abs:href");
             if (href.length() > 1 && href.contains(urlInit)) {
                 String[] corte = href.split("/"); //Corta o link em cada barra existente
                 String profundidade = url;
+                System.out.println(corte[2]);
                 try{
-                    for(int i=0; i<level;i++){
-                        profundidade = profundidade + corte[i+2] + "/"; //adiciona niveis ao link
+                    for(int i=2; i<=level;i++){
+                        //if(i==2){
+                            profundidade +=  corte[i+1] + "/";
+                        //}else if(corte[i+1]!="#"){
+                        //profundidade = profundidade + corte[i+1] + "/"; //adiciona niveis ao link
+                        //}
                     }
+                        
                     if(profundidade.length() > 1 && !payload.links.contains(profundidade)){
                         payload.links.add(profundidade);
                     }
-                }catch(IndexOutOfBoundsException e){
-                    
-                }
+                }catch(IndexOutOfBoundsException e){}
             }else{
-                for(int i = 0; i<payload.links.size(); i++){
+                /*for(int i = 0; i<payload.links.size(); i++){
                     if(href.equals(payload.links.get(i)) && href.contains(urlInit)){
                         repetido = true;
                         System.out.println(payload.links.get(i));
                     }
                 }
-                linkRepetido(payload, href, 1);
+                linkRepetido(payload, href, 1);*/
             }
-                //process(href, level+1);
-                //System.out.println("Teste - " + href + "|");
         }
         
             
@@ -86,8 +88,21 @@ public class EDACrawler {
             //temp = aux.next();
             
             String src = aux.next().attr("abs:src");
-            if (src.length() > 1 /*&& payload.imgs.isEmpty()*/) {
+            if (src.length() > 1 && src.contains(urlInit)) {
                 payload.imgs.add(src);
+                String[] corte = src.split("/"); //Corta o link em cada barra existente
+                String profundidade = url;
+                try{
+                    System.out.println(src);
+                    for(int i=0; i<level;i++){
+                        profundidade = profundidade + corte[i+2] + "/"; //adiciona niveis ao link
+                    }
+                    //if(profundidade.length() > 1 /*&& !payload.imgs.contains(profundidade)*/){
+                        payload.imgs.add(src);
+                        
+                    //}
+                }catch(IndexOutOfBoundsException e){}
+                
             } else {
                 for(int i = 0; i<payload.imgs.size();i++){
                     if(src.equals(payload.imgs.get(i))){

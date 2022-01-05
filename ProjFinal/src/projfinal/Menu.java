@@ -143,7 +143,7 @@ public class Menu extends javax.swing.JFrame {
         
         int numberImgs = ini.imgs.size();
         int numberLinks = ini.links.size();
-        String msg = "Foram encontradas " + numberImgs + " imagens em " + numberLinks + " url.";
+        String msg = "Foram encontradas " + numberImgs + " imagens em " + numberLinks + " links.";
         JOptionPane.showMessageDialog(this, msg);
         /*
         * GridLayout grid = (GridLayout)output.getLayout();
@@ -178,7 +178,7 @@ public class Menu extends javax.swing.JFrame {
          
         this.pack();
 
-        //System.out.println(ini.imgs);
+        System.out.println(ini.imgs);
         System.out.println(ini.links);
         
       }catch(SocketTimeoutException e){
