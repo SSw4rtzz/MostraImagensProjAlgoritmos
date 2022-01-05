@@ -33,9 +33,10 @@ public class EDACrawler {
 
     public Payload process(String url, int level) throws IOException {
         Payload payload = new Payload();
-        String[] urlInit = url.split("/");
+        String[] urlSepar = url.split("/");
+        String urlInit= urlSepar[2]; //URL HOST, ou seja www.google.com sem mais nada por exemplo
         
-        System.out.println(urlInit[2]); //URL HOST, ou seja www.google.com sem mais nada por exemplo
+        System.out.println("Link: " + urlInit + "\nProfundidade: " + level); 
 
         //if (level<=this.level) System.out.println("Tetse");;
         
@@ -51,11 +52,22 @@ public class EDACrawler {
         while (aux.hasNext()) {
             repetido = false;
             String href = aux.next().attr("href");
-            if (href.length() > 1 &&/* payload.links.isEmpty() && */href.contains(urlInit[2])) {
-                payload.links.add(href);
+            if (href.length() > 1 && href.contains(urlInit)) {
+                String[] corte = href.split("/"); //Corta o link em cada barra existente
+                String profundidade = url;
+                try{
+                    for(int i=0; i<level;i++){
+                        profundidade = profundidade + corte[i+2] + "/"; //adiciona niveis ao link
+                    }
+                    if(profundidade.length() > 1 && !payload.links.contains(profundidade)){
+                        payload.links.add(profundidade);
+                    }
+                }catch(IndexOutOfBoundsException e){
+                    
+                }
             }else{
                 for(int i = 0; i<payload.links.size(); i++){
-                    if(href.equals(payload.links.get(i)) && href.contains(urlInit[2])){
+                    if(href.equals(payload.links.get(i)) && href.contains(urlInit)){
                         repetido = true;
                         System.out.println(payload.links.get(i));
                     }

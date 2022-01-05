@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
@@ -131,7 +132,7 @@ public class Menu extends javax.swing.JFrame {
     }// GEN-LAST:event_txtLinkActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) throws IOException {// GEN-FIRST:event_btnSearchActionPerformed
-         
+      try{
         String link = txtLink.getText();
         int nivel = (int) level.getValue();
         EDACrawler eda = new EDACrawler();
@@ -177,8 +178,13 @@ public class Menu extends javax.swing.JFrame {
          
         this.pack();
 
-        System.out.println(ini.imgs);
+        //System.out.println(ini.imgs);
         System.out.println(ini.links);
+        
+      }catch(SocketTimeoutException e){
+          System.out.println("Erroooooooo a net morreu OUTRA VEZ..");
+      }
+        
         /*
          * boolean teste = false;
          * // Coloca https:// no inicio do link caso o utilizador não o coloque
