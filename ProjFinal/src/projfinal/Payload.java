@@ -8,10 +8,6 @@ package projfinal;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author pedrodias & paulosantos
- */
 public class Payload {
     public ArrayList<String> links;
     public ArrayList<String> imgs;

@@ -164,12 +164,8 @@ public class Menu extends javax.swing.JFrame {
          * }
          */
 
-        System.out.println("Primeiro link:\n" + ini.links);
-        // System.out.println("Outros link:\n" + auxi.links);
-
         // EDACrawler eda = new EDACrawler(txtLink.getText(), level.getValue());
 
-        System.out.println("Link: " + link + "\nProfundidade: " + nivel);
         int numberImgs = ini.imgs.size();
         int numberLinks = ini.links.size();
         String msg = "Foram encontradas " + numberImgs + " imagens em " + numberLinks + " links.";

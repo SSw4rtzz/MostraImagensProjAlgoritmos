@@ -7,6 +7,7 @@ package projfinal;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -16,46 +17,32 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-/**
- *
- * @author pedrodias & paulosantos
- */
 public class EDACrawler {
 
     public EDACrawler() throws IOException {
     }
 
     public Payload process(String url,int nivel) throws IOException {
-        Payload payload = new Payload();
-        //int auxNivel = nivel;
-        //ArrayList<String> auxPayload = new ArrayList<String>();
-
-        
+        Payload payload = new Payload();  
         if (!url.endsWith("/")) {
             url += "/";
         }
-
         Document doc = Jsoup.connect(url).get();
-
         Elements links = doc.select("a");
         Iterator<Element> aux = links.iterator();
     try{
         while (aux.hasNext()) {
-            
             String href = aux.next().attr("abs:href");
-            
-            if (href.length() > 1 && !payload.links.contains(href)) {
+            if (href.length() > 1 && !payload.links.contains(href) && !href.contains("#")) {
                 payload.links.add(href);
                 System.out.println(href);
             }
-            if (nivel>1 && !href.contains("#")){
-                    payload.links.addAll(process(href, nivel-1).links);
-                    payload.imgs.addAll(process(href, nivel-1).imgs);
-                    //for(int i=0;i<=auxpayload.links.size();i++){
-                    //payload.links.add(auxpayload.links.get(i));
+            if (nivel>1){
+                payload.links.addAll(process(href, nivel-1).links);
+                payload.imgs.addAll(process(href, nivel-1).imgs);
                 }
-                }
-             }catch(org.jsoup.HttpStatusException | SocketTimeoutException | UnsupportedMimeTypeException e){}
+            }
+        }catch(org.jsoup.HttpStatusException | SocketTimeoutException | UnknownHostException | UnsupportedMimeTypeException e){}
        
         
         Elements imgs = doc.select("img");
@@ -69,10 +56,6 @@ public class EDACrawler {
         }
 
         payload.html = doc.html();
-
-        //return payload;
-        System.out.println("--------------------------------");
-        System.out.println(payload.links.size());
         return payload;
     }
 
