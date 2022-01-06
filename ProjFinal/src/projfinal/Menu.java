@@ -15,9 +15,14 @@ import javax.imageio.ImageIO;
 import javax.sound.sampled.SourceDataLine;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -163,47 +168,76 @@ public class Menu extends javax.swing.JFrame {
          * 
          * }
          */
-
         // EDACrawler eda = new EDACrawler(txtLink.getText(), level.getValue());
-
         int numberImgs = ini.imgs.size();
         int numberLinks = ini.links.size();
         String msg = "Foram encontradas " + numberImgs + " imagens em " + numberLinks + " links.";
         JOptionPane.showMessageDialog(this, msg);
-        /*
-         * GridLayout grid = (GridLayout)output.getLayout();
-         * grid.setColumns(2);
-         * grid.setRows(numberImgs/2);
-         */
 
-        // grid
-        /*
-         * for (String img : ini.imgs) {
-         * try {
-         * Image image = null;
-         * URL url = new URL(img);
-         * image = ImageIO.read(url);
-         * JLabel lbl = new JLabel();
-         * ImageIcon icon = null;
-         * int iWidth = image.getWidth(null);
-         * int iHeight = image.getHeight(null);
-         * int newWidth = 100;
-         * if (iWidth > iHeight) {
-         * icon = new ImageIcon(
-         * image.getScaledInstance(newWidth, (newWidth * iHeight) / iWidth,
-         * Image.SCALE_DEFAULT));
-         * } else {
-         * icon = new ImageIcon(
-         * image.getScaledInstance((newWidth * iWidth) / iHeight, newWidth,
-         * Image.SCALE_DEFAULT));
-         * }
-         * lbl.setIcon(icon);
-         * //output.add(lbl);
-         * } catch (IllegalArgumentException e) {
-         * System.out.println("Erro: " + img);
-         * }
-         * }
-         */
+        
+        JPanel pane = new JPanel();
+        
+        JFrame f = new JFrame();
+        
+        JButton b1 = new JButton("1");
+        JButton b2 = new JButton("1");
+        JButton b3 = new JButton("1");
+        JButton b4 = new JButton("1");
+        JButton b5 = new JButton("1");
+        JButton b6 = new JButton("1");
+        JButton b7 = new JButton("1");
+        JButton b8 = new JButton("1");
+        JButton b9 = new JButton("1");
+
+        /*f.add(b1);
+        f.add(b2);
+        f.add(b3);
+        f.add(b4);
+        f.add(b5);
+        f.add(b6);
+        f.add(b7);
+        f.add(b8);
+        f.add(b9);*/
+
+
+        //GridLayout grid = (GridLayout)output.getLayout();
+        //grid.setColumns(2);
+        //grid.setRows(numberImgs/2);
+        for (String img : ini.imgs) {
+            try {
+                Image image = null;
+                URL url = new URL(img);
+                image = ImageIO.read(url);
+                JLabel lbl = new JLabel();
+                ImageIcon icon = null;
+                int iWidth = image.getWidth(null);
+                int iHeight = image.getHeight(null);
+                int newWidth = 100;
+                if (iWidth > iHeight) {
+                    icon = new ImageIcon(
+                            image.getScaledInstance(newWidth, (newWidth * iHeight) / iWidth,
+                                    Image.SCALE_DEFAULT));
+                } else {
+                    icon = new ImageIcon(
+                            image.getScaledInstance((newWidth * iWidth) / iHeight, newWidth,
+                                    Image.SCALE_DEFAULT));
+                }
+                lbl.setIcon(icon);
+                f.add(lbl);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Erro: " + img);
+            }
+        }
+        
+        //pane.setLayout(new GridLayout(ini.imgs.size()/4, 3, 20, 25));
+        
+            //JScrollPane scroll = new JScrollPane(pane,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        //f.add(scroll);
+        f.setLayout(new GridLayout(ini.imgs.size()/4, 3, 20, 25));
+        f.setSize(1000, 500);
+        f.setVisible(true);
+
 
         this.pack();
 
@@ -221,7 +255,6 @@ public class Menu extends javax.swing.JFrame {
          * }
          * }
          */
-
         // EDACrawler eda = new EDACrawler();
         // Payload ini = eda.process(link);
 
@@ -229,7 +262,6 @@ public class Menu extends javax.swing.JFrame {
          * String data1 = link;
          * String data2 = "teste";
          */
-
         // for(String str:ini.imgs){
 
         /*
@@ -244,15 +276,13 @@ public class Menu extends javax.swing.JFrame {
          * URL url = new URL("w.wallhaven.cc/full/pk/wallhaven-pkgkkp.png");
          * image = ImageIO.read(url);
          */
-
-        /******
-         * ADICIONA DADOS À TABELA
-         * Object[] row = { data1, data2 };
+        /**
+         * ****
+         * ADICIONA DADOS À TABELA Object[] row = { data1, data2 };
          * DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-         * 
+         *
          * model.addRow(row);
          */
-
         // System.out.println(ini.imgs);
     }// GEN-LAST:event_btnSearchActionPerformed
 

@@ -50,7 +50,8 @@ public class EDACrawler {
 
         while (aux.hasNext()) {
             String src = aux.next().attr("abs:src");
-            if (src.length() > 1) {
+            if (src.length() > 1 && !payload.imgs.contains(src)) {
+                System.out.println(src);
                 payload.imgs.add(src);
             }
         }
@@ -58,5 +59,4 @@ public class EDACrawler {
         payload.html = doc.html();
         return payload;
     }
-
 }
