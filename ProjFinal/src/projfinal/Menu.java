@@ -47,6 +47,7 @@ public class Menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
+    // <editor-fold defaultstate="collapsed" desc="Generated
     // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -55,6 +56,7 @@ public class Menu extends javax.swing.JFrame {
         flagDominios = new javax.swing.JCheckBox();
         level = new javax.swing.JSpinner();
         jLabel1 = new javax.swing.JLabel();
+        btnIPT = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Projeto");
@@ -83,6 +85,13 @@ public class Menu extends javax.swing.JFrame {
 
         jLabel1.setText("Nivel");
 
+        btnIPT.setText("IPT");
+        btnIPT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIPTActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -96,7 +105,9 @@ public class Menu extends javax.swing.JFrame {
                                         .addGroup(layout.createSequentialGroup()
                                                 .addComponent(flagDominios, javax.swing.GroupLayout.PREFERRED_SIZE, 106,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(255, 255, 255)
+                                                .addGap(72, 72, 72)
+                                                .addComponent(btnIPT)
+                                                .addGap(105, 105, 105)
                                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 42,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
@@ -115,7 +126,8 @@ public class Menu extends javax.swing.JFrame {
                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btnIPT))
                                 .addGap(27, 27, 27)
                                 .addComponent(txtLink, javax.swing.GroupLayout.PREFERRED_SIZE, 47,
                                         javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -127,72 +139,80 @@ public class Menu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnIPTActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnIPTActionPerformed
+        txtLink.setText("http://www.ipt.pt");
+    }// GEN-LAST:event_btnIPTActionPerformed
+
     private void txtLinkActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtLinkActionPerformed
         // TODO add your handling code here:
     }// GEN-LAST:event_txtLinkActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) throws IOException {// GEN-FIRST:event_btnSearchActionPerformed
-      try{
         String link = txtLink.getText();
         int nivel = (int) level.getValue();
         EDACrawler eda = new EDACrawler();
         Payload ini = new Payload();
-        
-        for(int i=1; i<=nivel;i++){
-        ini = eda.process(link, i);
-        }
-        
-        
-        
-        //EDACrawler eda = new EDACrawler(txtLink.getText(), level.getValue());
-        
-        System.out.println("Link: " + link + "\nProfundidade: " + nivel); 
+        Payload auxi;
+
+        eda.process(link, nivel);
+
+        /*
+         * for(int i=1; i <= ini.links.size();i++){
+         * auxi = eda.process(ini.links.get(i));
+         * 
+         * }
+         */
+
+        System.out.println("Primeiro link:\n" + ini.links);
+        // System.out.println("Outros link:\n" + auxi.links);
+
+        // EDACrawler eda = new EDACrawler(txtLink.getText(), level.getValue());
+
+        System.out.println("Link: " + link + "\nProfundidade: " + nivel);
         int numberImgs = ini.imgs.size();
         int numberLinks = ini.links.size();
         String msg = "Foram encontradas " + numberImgs + " imagens em " + numberLinks + " links.";
         JOptionPane.showMessageDialog(this, msg);
         /*
-        * GridLayout grid = (GridLayout)output.getLayout();
-        * grid.setColumns(2);
-        * grid.setRows(numberImgs/2);
-        */
-        
-        //grid
-        /*for (String img : ini.imgs) {
-            try {
-            Image image = null;
-            URL url = new URL(img);
-            image = ImageIO.read(url);
-            JLabel lbl = new JLabel();
-            ImageIcon icon = null;
-            int iWidth = image.getWidth(null);
-            int iHeight = image.getHeight(null);
-            int newWidth = 100;
-            if (iWidth > iHeight) {
-            icon = new ImageIcon(
-            image.getScaledInstance(newWidth, (newWidth * iHeight) / iWidth, Image.SCALE_DEFAULT));
-            } else {
-            icon = new ImageIcon(
-            image.getScaledInstance((newWidth * iWidth) / iHeight, newWidth, Image.SCALE_DEFAULT));
-            }
-            lbl.setIcon(icon);
-            //output.add(lbl);
-            } catch (IllegalArgumentException e) {
-            System.out.println("Erro: " + img);
-            }
-        }*/
-        
-        
-         
+         * GridLayout grid = (GridLayout)output.getLayout();
+         * grid.setColumns(2);
+         * grid.setRows(numberImgs/2);
+         */
+
+        // grid
+        /*
+         * for (String img : ini.imgs) {
+         * try {
+         * Image image = null;
+         * URL url = new URL(img);
+         * image = ImageIO.read(url);
+         * JLabel lbl = new JLabel();
+         * ImageIcon icon = null;
+         * int iWidth = image.getWidth(null);
+         * int iHeight = image.getHeight(null);
+         * int newWidth = 100;
+         * if (iWidth > iHeight) {
+         * icon = new ImageIcon(
+         * image.getScaledInstance(newWidth, (newWidth * iHeight) / iWidth,
+         * Image.SCALE_DEFAULT));
+         * } else {
+         * icon = new ImageIcon(
+         * image.getScaledInstance((newWidth * iWidth) / iHeight, newWidth,
+         * Image.SCALE_DEFAULT));
+         * }
+         * lbl.setIcon(icon);
+         * //output.add(lbl);
+         * } catch (IllegalArgumentException e) {
+         * System.out.println("Erro: " + img);
+         * }
+         * }
+         */
+
         this.pack();
 
-        System.out.println(ini.imgs);
-        System.out.println(ini.links);
-        
-      }catch(SocketTimeoutException e){
-          System.out.println("Erroooooooo a net morreu OUTRA VEZ..");
-      }
-        
+        // System.out.println(ini.imgs);
+        // System.out.println(ini.links);
+
         /*
          * boolean teste = false;
          * // Coloca https:// no inicio do link caso o utilizador não o coloque
@@ -240,6 +260,7 @@ public class Menu extends javax.swing.JFrame {
     }// GEN-LAST:event_btnSearchActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnIPT;
     private javax.swing.JButton btnSearch;
     private javax.swing.JCheckBox flagDominios;
     private javax.swing.JLabel jLabel1;

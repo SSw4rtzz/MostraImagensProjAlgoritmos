@@ -34,7 +34,9 @@
                   <Component id="txtLink" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="flagDominios" min="-2" pref="106" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="255" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
+                      <Component id="btnIPT" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="105" max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" pref="42" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="level" min="-2" pref="50" max="-2" attributes="0"/>
@@ -52,6 +54,7 @@
                   <Component id="flagDominios" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
                   <Component id="level" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel1" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+                  <Component id="btnIPT" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
               <Component id="txtLink" min="-2" pref="47" max="-2" attributes="0"/>
@@ -105,6 +108,14 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Nivel"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnIPT">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="IPT"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnIPTActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
