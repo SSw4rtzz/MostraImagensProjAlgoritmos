@@ -8,8 +8,10 @@ package projfinal;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import org.jsoup.Jsoup;
+import org.jsoup.UnsupportedMimeTypeException;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -19,13 +21,11 @@ import org.jsoup.select.Elements;
  * @author pedrodias & paulosantos
  */
 public class EDACrawler {
-        int contaLinks;
-        int contaImagens;
 
     public EDACrawler() throws IOException {
     }
 
-    public void process(String url,int nivel) throws IOException {
+    public Payload process(String url,int nivel) throws IOException {
         Payload payload = new Payload();
         //int auxNivel = nivel;
         //ArrayList<String> auxPayload = new ArrayList<String>();
@@ -43,23 +43,19 @@ public class EDACrawler {
         while (aux.hasNext()) {
             
             String href = aux.next().attr("abs:href");
+            
             if (href.length() > 1 && !payload.links.contains(href)) {
                 payload.links.add(href);
                 System.out.println(href);
             }
-            if (nivel>1){
-                    process(href, nivel-1);
+            if (nivel>1 && !href.contains("#")){
+                    payload.links.addAll(process(href, nivel-1).links);
+                    payload.imgs.addAll(process(href, nivel-1).imgs);
                     //for(int i=0;i<=auxpayload.links.size();i++){
                     //payload.links.add(auxpayload.links.get(i));
                 }
                 }
-             }catch(org.jsoup.HttpStatusException | SocketTimeoutException e){
-            
-        
-            
-            
-                   
-        }
+             }catch(org.jsoup.HttpStatusException | SocketTimeoutException | UnsupportedMimeTypeException e){}
        
         
         Elements imgs = doc.select("img");
@@ -73,13 +69,11 @@ public class EDACrawler {
         }
 
         payload.html = doc.html();
-        
-        contaLinks += payload.links.size();
-        contaImagens += payload.imgs.size();
-        
+
         //return payload;
-        System.out.println("Links: " + contaLinks);
-        System.out.println("Imagens: " + contaImagens);
+        System.out.println("--------------------------------");
+        System.out.println(payload.links.size());
+        return payload;
     }
 
 }

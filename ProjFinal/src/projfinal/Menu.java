@@ -151,10 +151,11 @@ public class Menu extends javax.swing.JFrame {
         String link = txtLink.getText();
         int nivel = (int) level.getValue();
         EDACrawler eda = new EDACrawler();
-        Payload ini = new Payload();
-        Payload auxi;
+        Payload ini = eda.process(link, nivel);
+        //int contaLinks = 0;
+        //int contaImagens=0;
 
-        eda.process(link, nivel);
+        //eda.process(link, nivel);
 
         /*
          * for(int i=1; i <= ini.links.size();i++){
