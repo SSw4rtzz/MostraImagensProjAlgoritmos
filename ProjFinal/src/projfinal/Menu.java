@@ -9,9 +9,12 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.SourceDataLine;
 import javax.swing.Icon;
@@ -54,7 +57,8 @@ public class Menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         btnSearch = new javax.swing.JButton();
@@ -101,46 +105,60 @@ public class Menu extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtLink)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(flagDominios, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(72, 72, 72)
-                        .addComponent(btnIPT)
-                        .addGap(105, 105, 105)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(level, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txtLink)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(flagDominios, javax.swing.GroupLayout.PREFERRED_SIZE, 106,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(72, 72, 72)
+                                                .addComponent(btnIPT)
+                                                .addGap(105, 105, 105)
+                                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 42,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(level, javax.swing.GroupLayout.PREFERRED_SIZE, 50,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap()));
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(62, 62, 62)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(flagDominios, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(level, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnIPT))
-                .addGap(27, 27, 27)
-                .addComponent(txtLink, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(62, 62, 62)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(flagDominios, javax.swing.GroupLayout.PREFERRED_SIZE, 38,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(level, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btnIPT))
+                                .addGap(27, 27, 27)
+                                .addComponent(txtLink, javax.swing.GroupLayout.PREFERRED_SIZE, 47,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 73,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(15, Short.MAX_VALUE)));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtLinkKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtLinkKeyPressed
-        if (evt.getKeyCode()== KeyEvent.VK_ENTER){
-                btnSearchActionPerformed(evt);
-        }// TODO add your handling code here:
-    }//GEN-LAST:event_txtLinkKeyPressed
+    private void txtLinkKeyPressed(java.awt.event.KeyEvent evt) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            try {
+                programa(); //Corre a função programa, que contem a maior parte do código
+            } catch (IOException ex) {
+                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }// GEN-LAST:event_txtLinkKeyPressed
 
     private void btnIPTActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnIPTActionPerformed
         txtLink.setText("http://www.ipt.pt");
@@ -150,15 +168,33 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }// GEN-LAST:event_txtLinkActionPerformed
 
-    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) throws IOException {// GEN-FIRST:event_btnSearchActionPerformed
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {
+        try {
+            // GEN-FIRST:event_btnSearchActionPerformed
+            programa(); //Corre a função programa, que contem a maior parte do código
+        } catch (IOException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }// GEN-LAST:event_btnSearchActionPerformed
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnIPT;
+    private javax.swing.JButton btnSearch;
+    private javax.swing.JCheckBox flagDominios;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JSpinner level;
+    private javax.swing.JTextField txtLink;
+    // End of variables declaration//GEN-END:variables
+
+    public void programa() throws MalformedURLException, IOException {
         String link = txtLink.getText();
         int nivel = (int) level.getValue();
         EDACrawler eda = new EDACrawler();
         Payload ini = eda.process(link, nivel);
-        //int contaLinks = 0;
-        //int contaImagens=0;
+        // int contaLinks = 0;
+        // int contaImagens=0;
 
-        //eda.process(link, nivel);
+        // eda.process(link, nivel);
 
         /*
          * for(int i=1; i <= ini.links.size();i++){
@@ -172,11 +208,10 @@ public class Menu extends javax.swing.JFrame {
         String msg = "Foram encontradas " + numberImgs + " imagens em " + numberLinks + " links.";
         JOptionPane.showMessageDialog(this, msg);
 
-        
         JPanel pane = new JPanel();
-        
+
         JFrame f = new JFrame();
-        
+
         JButton b1 = new JButton("1");
         JButton b2 = new JButton("1");
         JButton b3 = new JButton("1");
@@ -187,20 +222,21 @@ public class Menu extends javax.swing.JFrame {
         JButton b8 = new JButton("1");
         JButton b9 = new JButton("1");
 
-        /*f.add(b1);
-        f.add(b2);
-        f.add(b3);
-        f.add(b4);
-        f.add(b5);
-        f.add(b6);
-        f.add(b7);
-        f.add(b8);
-        f.add(b9);*/
+        /*
+         * f.add(b1);
+         * f.add(b2);
+         * f.add(b3);
+         * f.add(b4);
+         * f.add(b5);
+         * f.add(b6);
+         * f.add(b7);
+         * f.add(b8);
+         * f.add(b9);
+         */
 
-
-        //GridLayout grid = (GridLayout)output.getLayout();
-        //grid.setColumns(2);
-        //grid.setRows(numberImgs/2);
+        // GridLayout grid = (GridLayout)output.getLayout();
+        // grid.setColumns(2);
+        // grid.setRows(numberImgs/2);
         for (String img : ini.imgs) {
             try {
                 Image image = null;
@@ -226,16 +262,17 @@ public class Menu extends javax.swing.JFrame {
                 System.out.println("Erro: " + img);
             }
         }
-        
-        //pane.setLayout(new GridLayout(ini.imgs.size()/4, 3, 20, 25));
-        
-            //JScrollPane scroll = new JScrollPane(pane,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-        //f.add(scroll);
-        f.setLayout(new GridLayout(ini.imgs.size()/4, 3, 20, 25));
+        
+        GridLayout grid = new GridLayout(ini.imgs.size()/4, 3, 20, 25);
+
+         JScrollPane scroll = new JScrollPane(f);
+         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+                 
+        // f.add(scroll);
+        f.setLayout(grid/*new GridLayout(ini.imgs.size() / 4, 3, 20, 25)*/);
         f.setSize(1000, 500);
         f.setVisible(true);
-
 
         this.pack();
 
@@ -282,14 +319,5 @@ public class Menu extends javax.swing.JFrame {
          * model.addRow(row);
          */
         // System.out.println(ini.imgs);
-    }// GEN-LAST:event_btnSearchActionPerformed
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnIPT;
-    private javax.swing.JButton btnSearch;
-    private javax.swing.JCheckBox flagDominios;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JSpinner level;
-    private javax.swing.JTextField txtLink;
-    // End of variables declaration//GEN-END:variables
+    }
 }
