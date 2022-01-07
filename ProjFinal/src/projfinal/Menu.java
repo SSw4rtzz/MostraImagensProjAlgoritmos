@@ -4,6 +4,7 @@
  */
 package projfinal;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -26,6 +27,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
@@ -208,9 +210,12 @@ public class Menu extends javax.swing.JFrame {
         String msg = "Foram encontradas " + numberImgs + " imagens em " + numberLinks + " links.";
         JOptionPane.showMessageDialog(this, msg);
 
-        JPanel pane = new JPanel();
+        
 
         JFrame f = new JFrame();
+        //JPanel f = new JPanel();
+        //JPanel subPanel = new JPanel();
+        
 
         JButton b1 = new JButton("1");
         JButton b2 = new JButton("1");
@@ -264,13 +269,15 @@ public class Menu extends javax.swing.JFrame {
         }
 
         
-        GridLayout grid = new GridLayout(ini.imgs.size()/4, 3, 20, 25);
-
-         JScrollPane scroll = new JScrollPane(f);
+        //GridLayout grid = new GridLayout();
+        //grid.setColumns(2);
+        //grid.setRows(ini.imgs.size()/2);
+  
+        JScrollPane scroll = new JScrollPane();
          scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+         f.add(scroll);
                  
-        // f.add(scroll);
-        f.setLayout(grid/*new GridLayout(ini.imgs.size() / 4, 3, 20, 25)*/);
+        f.setLayout(new GridLayout(ini.imgs.size() / 2, 2, 20, 25));
         f.setSize(1000, 500);
         f.setVisible(true);
 
