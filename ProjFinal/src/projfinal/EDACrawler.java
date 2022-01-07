@@ -22,37 +22,70 @@ public class EDACrawler {
     public EDACrawler() throws IOException {
     }
 
-    public Payload process(String url,int nivel) throws IOException {
-        Payload payload = new Payload();  
+    public Payload process(String url, int nivel, boolean dominio) throws IOException {
+        Payload payload = new Payload();
         if (!url.endsWith("/")) {
             url += "/";
         }
-        Document doc = Jsoup.connect(url).get();
+        Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36").get();
         Elements links = doc.select("a");
         Iterator<Element> aux = links.iterator();
-    try{
-        while (aux.hasNext()) {
-            String href = aux.next().attr("abs:href");
-            if (href.length() > 1 && !payload.links.contains(href) && !href.contains("#")) {
-                payload.links.add(href);
-                System.out.println(href);
+        String[] urlCortado = url.split("/");
+        
+
+        if (dominio) {
+            try {
+                while (aux.hasNext()) {
+                    String href = aux.next().attr("abs:href");
+                    if (href.length() > 1 && !payload.links.contains(href) && !href.contains("#") && href.contains(urlCortado[2])) {
+                        payload.links.add(href);
+                        System.out.println(href);
+                    }
+                    if (nivel > 1 && href.contains(urlCortado[2])) {
+                        System.out.println(urlCortado[2]);
+                        payload.links.addAll(process(href, nivel - 1, dominio).links);
+                        payload.imgs.addAll(process(href, nivel - 1, dominio).imgs);
+                    }
+                }
+            } catch (org.jsoup.HttpStatusException | SocketTimeoutException | UnknownHostException | UnsupportedMimeTypeException e) {
             }
-            if (nivel>1){
-                payload.links.addAll(process(href, nivel-1).links);
-                payload.imgs.addAll(process(href, nivel-1).imgs);
+
+            Elements imgs = doc.select("img");
+            aux = imgs.iterator();
+
+            while (aux.hasNext()) {
+                String src = aux.next().attr("abs:src");
+                if (src.length() > 1 && !payload.imgs.contains(src)) {
+                    System.out.println(src);
+                    payload.imgs.add(src);
                 }
             }
-        }catch(org.jsoup.HttpStatusException | SocketTimeoutException | UnknownHostException | UnsupportedMimeTypeException e){}
-       
-        
-        Elements imgs = doc.select("img");
-        aux = imgs.iterator();
+        } else {
 
-        while (aux.hasNext()) {
-            String src = aux.next().attr("abs:src");
-            if (src.length() > 1 && !payload.imgs.contains(src)) {
-                System.out.println(src);
-                payload.imgs.add(src);
+            try {
+                while (aux.hasNext()) {
+                    String href = aux.next().attr("abs:href");
+                    if (href.length() > 1 && !payload.links.contains(href) && !href.contains("#")) {
+                        payload.links.add(href);
+                        System.out.println(href);
+                    }
+                    if (nivel > 1) {
+                        payload.links.addAll(process(href, nivel - 1, dominio).links);
+                        payload.imgs.addAll(process(href, nivel - 1, dominio).imgs);
+                    }
+                }
+            } catch (org.jsoup.HttpStatusException | SocketTimeoutException | UnknownHostException | UnsupportedMimeTypeException e) {
+            }
+
+            Elements imgs = doc.select("img");
+            aux = imgs.iterator();
+
+            while (aux.hasNext()) {
+                String src = aux.next().attr("abs:src");
+                if (src.length() > 1 && !payload.imgs.contains(src)) {
+                    System.out.println(src);
+                    payload.imgs.add(src);
+                }
             }
         }
 

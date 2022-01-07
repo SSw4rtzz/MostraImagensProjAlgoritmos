@@ -65,7 +65,7 @@ public class Menu extends javax.swing.JFrame {
 
         btnSearch = new javax.swing.JButton();
         txtLink = new javax.swing.JTextField();
-        flagDominios = new javax.swing.JCheckBox();
+        flagDominio = new javax.swing.JCheckBox();
         level = new javax.swing.JSpinner();
         jLabel1 = new javax.swing.JLabel();
         btnIPT = new javax.swing.JButton();
@@ -90,7 +90,7 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        flagDominios.setText("Dominios");
+        flagDominio.setText("Dominios");
 
         level.setModel(new javax.swing.SpinnerNumberModel(1, 1, 9, 1));
         level.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -114,7 +114,7 @@ public class Menu extends javax.swing.JFrame {
                     .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtLink)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(flagDominios, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(flagDominio, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(72, 72, 72)
                         .addComponent(btnIPT)
                         .addGap(105, 105, 105)
@@ -128,7 +128,7 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(62, 62, 62)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(flagDominios, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(flagDominio, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(level, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnIPT))
@@ -169,7 +169,7 @@ public class Menu extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIPT;
     private javax.swing.JButton btnSearch;
-    private javax.swing.JCheckBox flagDominios;
+    private javax.swing.JCheckBox flagDominio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JSpinner level;
     private javax.swing.JTextField txtLink;
@@ -179,11 +179,9 @@ public class Menu extends javax.swing.JFrame {
         String link = txtLink.getText();
         int nivel = (int) level.getValue();
         EDACrawler eda = new EDACrawler();
-        Payload ini = eda.process(link, nivel);
-        // int contaLinks = 0;
-        // int contaImagens=0;
+        boolean dominio = flagDominio.isSelected();
+        Payload ini = eda.process(link, nivel, dominio);
 
-        // eda.process(link, nivel);
 
         /*
          * for(int i=1; i <= ini.links.size();i++){
