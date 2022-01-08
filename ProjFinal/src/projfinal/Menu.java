@@ -4,38 +4,23 @@
  */
 package projfinal;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.sound.sampled.SourceDataLine;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author sw4rtz
- */
 public class Menu extends javax.swing.JFrame {
 
     /**
@@ -214,8 +199,6 @@ public class Menu extends javax.swing.JFrame {
         int numberLinks = ini.links.size();
         String msg = "Foram encontradas " + numberImgs + " imagens em " + numberLinks + " links.";
         JOptionPane.showMessageDialog(this, msg);
-
-        
         
         JFrame f = new JFrame();
         f.setTitle("Teste");
@@ -224,10 +207,6 @@ public class Menu extends javax.swing.JFrame {
         f.setLocationRelativeTo(null);
         
         JPanel panel = new JPanel(new GridLayout(0,5,10,10));
-        /*for(int i = 1; i<= 30; i++){
-            JButton button = new JButton("Button " + Integer.toString(i));
-            panel.add(button);
-        }*/
          
         for (String img : ini.imgs) {
             try {
@@ -267,98 +246,7 @@ public class Menu extends javax.swing.JFrame {
          content.setPreferredSize(new Dimension(x,y));
          content.add(scroll);
         f.setContentPane(content);
-        //f.add(panel);
         f.pack();
         f.setVisible(true);
-        
-        //JPanel pane = new JPanel(new GridLayout(ini.imgs.size() / 2, 2, 20, 25));
-        //JPanel subPanel = new JPanel();
-        
-
-        JButton b1 = new JButton("1");
-        JButton b2 = new JButton("1");
-        JButton b3 = new JButton("1");
-        JButton b4 = new JButton("1");
-        JButton b5 = new JButton("1");
-        JButton b6 = new JButton("1");
-        JButton b7 = new JButton("1");
-        JButton b8 = new JButton("1");
-        JButton b9 = new JButton("1");
-
-        /*
-         * f.add(b1);
-         * f.add(b2);
-         * f.add(b3);
-         * f.add(b4);
-         * f.add(b5);
-         * f.add(b6);
-         * f.add(b7);
-         * f.add(b8);
-         * f.add(b9);
-         */
-
-        // GridLayout grid = (GridLayout)output.getLayout();
-        // grid.setColumns(2);
-        // grid.setRows(numberImgs/2);
-        
-
-        
-        /*GridLayout grid = new GridLayout();
-        grid.setColumns(2);
-        grid.setRows(ini.imgs.size()/2);
-  
-        JScrollPane scroll = new JScrollPane();
-         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-         //f.add(scroll);
-                 
-        f.setLayout(grid/*new GridLayout(ini.imgs.size() / 2, 2, 20, 25));
-        f.setSize(1000, 500);
-        f.setVisible(true);
-
-        this.pack();*/
-
-        // System.out.println(ini.imgs);
-        // System.out.println(ini.links);
-
-        /*
-         * boolean teste = false;
-         * // Coloca https:// no inicio do link caso o utilizador não o coloque
-         * teste = link.contains("http://");
-         * if (teste == false) {
-         * teste = link.contains("https://");
-         * if (teste == false) {
-         * link = "https://" + link;
-         * }
-         * }
-         */
-        // EDACrawler eda = new EDACrawler();
-        // Payload ini = eda.process(link);
-
-        /*
-         * String data1 = link;
-         * String data2 = "teste";
-         */
-        // for(String str:ini.imgs){
-
-        /*
-         * URL url = new URL(str);
-         * image = ImageIO.read(url);
-         * 
-         * ImageIcon icon = new ImageIcon(image);
-         * 
-         * }
-         * 
-         * Image image = null;
-         * URL url = new URL("w.wallhaven.cc/full/pk/wallhaven-pkgkkp.png");
-         * image = ImageIO.read(url);
-         */
-        /**
-         * ****
-         * ADICIONA DADOS À TABELA Object[] row = { data1, data2 };
-         * DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-         *
-         * model.addRow(row);
-         */
-        // System.out.println(ini.imgs);
     }
 }

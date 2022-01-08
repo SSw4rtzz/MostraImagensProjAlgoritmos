@@ -5,13 +5,9 @@
  */
 package projfinal;
 
-import java.awt.List;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -35,10 +31,7 @@ public class EDACrawler {
         Elements links = doc.select("a");
         Iterator<Element> aux = links.iterator();
         boolean valido = false;
-        
-
-        if (dominio) {
-            
+        if (dominio) {            
             System.out.println("TESTE: " + dominioText);
             System.out.println("TESTE2: " + url);
             try {
@@ -51,8 +44,7 @@ public class EDACrawler {
                            String[] auxhref = href.split("\\?");
                            href = auxhref[0];
                        }
-                    
-                    if (href.length() > 1 && !payload.links.contains(href) && href.contains(dominioText) && !href.contains("mailto")) {
+                    if (href.length() > 1 && !payload.links.contains(href) && href.contains(dominioText) && !href.contains("mailto:")) {
                         payload.links.add(href);
                         valido = true;
                         System.out.println(href);
@@ -62,21 +54,18 @@ public class EDACrawler {
                         payload.links.addAll(recursiva.links);
                         payload.imgs.addAll(recursiva.imgs);
                     }
-                    
                 }
-            } catch (org.jsoup.HttpStatusException | SocketTimeoutException | UnknownHostException | UnsupportedMimeTypeException e) {
-            }
-
+            } catch (org.jsoup.HttpStatusException | SocketTimeoutException | UnknownHostException | UnsupportedMimeTypeException e) {}
             Elements imgs = doc.select("img");
             aux = imgs.iterator();
             if(valido){
-            while (aux.hasNext()) {
-                String src = aux.next().attr("abs:src");
-                if (src.length() > 1 && !payload.imgs.contains(src) && src.contains(tema)) {
-                    System.out.println(src);
-                    payload.imgs.add(src);
+                while (aux.hasNext()) {
+                    String src = aux.next().attr("abs:src");
+                    if (src.length() > 1 && !payload.imgs.contains(src) && src.contains(tema)) {
+                        System.out.println(src);
+                        payload.imgs.add(src);
+                    }
                 }
-            }
             }
         } else {
 
@@ -93,12 +82,9 @@ public class EDACrawler {
                         payload.imgs.addAll(recursiva.imgs);
                     }
                 }
-            } catch (org.jsoup.HttpStatusException | SocketTimeoutException | UnknownHostException | UnsupportedMimeTypeException e) {
-            }
-
+            } catch (org.jsoup.HttpStatusException | SocketTimeoutException | UnknownHostException | UnsupportedMimeTypeException e) {}
             Elements imgs = doc.select("img");
             aux = imgs.iterator();
-
             while (aux.hasNext()) {
                 String src = aux.next().attr("abs:src");
                 if (src.length() > 1 && !payload.imgs.contains(src) && src.contains(tema)) {
@@ -110,7 +96,6 @@ public class EDACrawler {
         payload.html = doc.html();
         return payload;
     }
-    
     public Payload repetido(Payload ini){ 
     Set<String>set = new HashSet<>(ini.links);
     ini.links.clear();
