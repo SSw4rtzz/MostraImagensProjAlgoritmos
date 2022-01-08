@@ -70,7 +70,7 @@ public class Menu extends javax.swing.JFrame {
         level = new javax.swing.JSpinner();
         jLabel1 = new javax.swing.JLabel();
         btnIPT = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        txtTema = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Projeto");
@@ -106,7 +106,7 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        jTextField1.setText("Tema");
+        txtTema.setText("Tema");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -119,7 +119,7 @@ public class Menu extends javax.swing.JFrame {
                     .addComponent(txtLink)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtTema, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(flagDominio, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(69, 69, 69)
@@ -135,7 +135,7 @@ public class Menu extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtTema, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(flagDominio, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -181,15 +181,16 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton btnSearch;
     private javax.swing.JCheckBox flagDominio;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JSpinner level;
     private javax.swing.JTextField txtLink;
+    private javax.swing.JTextField txtTema;
     // End of variables declaration//GEN-END:variables
 
     public void programa() throws MalformedURLException, IOException {
         String link = txtLink.getText();
         int nivel = (int) level.getValue();
         EDACrawler eda = new EDACrawler();
+        String tema = txtTema.getText();
         boolean dominio = flagDominio.isSelected();
         String[] urlCortado = link.split("/");
         String dominioText = urlCortado[2];
@@ -197,7 +198,7 @@ public class Menu extends javax.swing.JFrame {
            String[] dom = dominioText.split("www.");
            dominioText = dom[1];
         }
-        Payload ini = eda.process(link, nivel, dominio, dominioText); //Verifica repetidos e apaga
+        Payload ini = eda.process(link, nivel, dominio, dominioText, tema); //Verifica repetidos e apaga
         ini=eda.repetido(ini);
 
         int numberImgs = ini.imgs.size();
@@ -214,17 +215,47 @@ public class Menu extends javax.swing.JFrame {
         f.setLocationRelativeTo(null);
         
         JPanel panel = new JPanel(new GridLayout(0,5,10,10));
-        for(int i = 1; i<= 30; i++){
+        /*for(int i = 1; i<= 30; i++){
             JButton button = new JButton("Button " + Integer.toString(i));
             panel.add(button);
+        }*/
+         
+        for (String img : ini.imgs) {
+            try {
+                Image image = null;
+                URL url = new URL(img);
+                image = ImageIO.read(url);
+                JLabel lbl = new JLabel();
+                ImageIcon icon = null;
+                int iWidth = image.getWidth(null);
+                int iHeight = image.getHeight(null);
+                int newWidth = 100;
+                if (iWidth > iHeight) {
+                    icon = new ImageIcon(
+                            image.getScaledInstance(newWidth, (newWidth * iHeight) / iWidth,
+                                    Image.SCALE_DEFAULT));
+                } else {
+                    icon = new ImageIcon(
+                            image.getScaledInstance((newWidth * iWidth) / iHeight, newWidth,
+                                    Image.SCALE_DEFAULT));
+                }
+                lbl.setIcon(icon);
+                panel.add(lbl);
+            } catch (IllegalArgumentException | NullPointerException e) {
+                System.out.println("Erro: " + img);
+            }
         }
+        
+        /* Dimensões */
+        int x = 700;
+        int y = 500;
         
         final JScrollPane scroll = new JScrollPane(panel);
          scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-          scroll.setBounds(10,10,300,300);
+          scroll.setBounds(5,5, x-10, y-10);
          
          JPanel content = new JPanel(null);
-         content.setPreferredSize(new Dimension(600,400));
+         content.setPreferredSize(new Dimension(x,y));
          content.add(scroll);
         f.setContentPane(content);
         //f.add(panel);
@@ -260,31 +291,7 @@ public class Menu extends javax.swing.JFrame {
         // GridLayout grid = (GridLayout)output.getLayout();
         // grid.setColumns(2);
         // grid.setRows(numberImgs/2);
-        /*for (String img : ini.imgs) {
-            try {
-                Image image = null;
-                URL url = new URL(img);
-                image = ImageIO.read(url);
-                JLabel lbl = new JLabel();
-                ImageIcon icon = null;
-                int iWidth = image.getWidth(null);
-                int iHeight = image.getHeight(null);
-                int newWidth = 100;
-                if (iWidth > iHeight) {
-                    icon = new ImageIcon(
-                            image.getScaledInstance(newWidth, (newWidth * iHeight) / iWidth,
-                                    Image.SCALE_DEFAULT));
-                } else {
-                    icon = new ImageIcon(
-                            image.getScaledInstance((newWidth * iWidth) / iHeight, newWidth,
-                                    Image.SCALE_DEFAULT));
-                }
-                lbl.setIcon(icon);
-                pane.add(lbl);
-            } catch (IllegalArgumentException | NullPointerException e) {
-                System.out.println("Erro: " + img);
-            }
-        }*/
+        
 
         
         /*GridLayout grid = new GridLayout();
