@@ -26,7 +26,7 @@ public class EDACrawler {
     public EDACrawler() throws IOException {
     }
 
-    public Payload process(String url, int nivel, boolean dominio, String dominioText) throws IOException {
+    public Payload process(String url, int nivel, boolean dominio, String dominioText, String tema) throws IOException {
         Payload payload = new Payload();
         if (!url.endsWith("/")) {
             url += "/";
@@ -52,13 +52,13 @@ public class EDACrawler {
                            href = auxhref[0];
                        }
                     
-                    if (href.length() > 1 && !payload.links.contains(href) && href.contains(dominioText)) {
+                    if (href.length() > 1 && !payload.links.contains(href) && href.contains(dominioText) && !href.contains("mailto")) {
                         payload.links.add(href);
                         valido = true;
                         System.out.println(href);
                     }
                     if (nivel > 1 && !payload.links.contains(href)) {
-                        Payload recursiva = process(href,nivel-1,dominio, dominioText);
+                        Payload recursiva = process(href,nivel-1,dominio, dominioText, tema);
                         payload.links.addAll(recursiva.links);
                         payload.imgs.addAll(recursiva.imgs);
                     }
@@ -72,7 +72,7 @@ public class EDACrawler {
             if(valido){
             while (aux.hasNext()) {
                 String src = aux.next().attr("abs:src");
-                if (src.length() > 1 && !payload.imgs.contains(src)) {
+                if (src.length() > 1 && !payload.imgs.contains(src) && src.contains(tema)) {
                     System.out.println(src);
                     payload.imgs.add(src);
                 }
@@ -83,12 +83,12 @@ public class EDACrawler {
             try {
                 while (aux.hasNext()) {
                     String href = aux.next().attr("abs:href");
-                    if (href.length() > 1 && !payload.links.contains(href) && !href.contains("#")) {
+                    if (href.length() > 1 && !payload.links.contains(href) && !href.contains("#") && !href.contains("mailto")){
                         payload.links.add(href);
                         System.out.println(href);
                     }
                     if (nivel > 1) {
-                        Payload recursiva = process(href,nivel-1,dominio, dominioText);
+                        Payload recursiva = process(href,nivel-1,dominio, dominioText, tema);
                         payload.links.addAll(recursiva.links);
                         payload.imgs.addAll(recursiva.imgs);
                     }
@@ -101,7 +101,7 @@ public class EDACrawler {
 
             while (aux.hasNext()) {
                 String src = aux.next().attr("abs:src");
-                if (src.length() > 1 && !payload.imgs.contains(src)) {
+                if (src.length() > 1 && !payload.imgs.contains(src) && src.contains(tema)) {
                     System.out.println(src);
                     payload.imgs.add(src);
                 }
