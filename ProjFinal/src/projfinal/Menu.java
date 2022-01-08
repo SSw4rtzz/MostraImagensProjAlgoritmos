@@ -5,6 +5,7 @@
 package projfinal;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -182,22 +183,13 @@ public class Menu extends javax.swing.JFrame {
         boolean dominio = flagDominio.isSelected();
         String[] urlCortado = link.split("/");
         String dominioText = urlCortado[2];
-        if(urlCortado[2].contains("www")){
-           String[] dom = dominioText.split("www");
+        if(urlCortado[2].contains("www.")){
+           String[] dom = dominioText.split("www.");
            dominioText = dom[1];
         }
         Payload ini = eda.process(link, nivel, dominio, dominioText); //Verifica repetidos e apaga
-        //System.out.println("Teste : " + ini.links.get(282));
         ini=eda.repetido(ini);
-        
 
-        /*
-         * for(int i=1; i <= ini.links.size();i++){
-         * auxi = eda.process(ini.links.get(i));
-         * 
-         * }
-         */
-        // EDACrawler eda = new EDACrawler(txtLink.getText(), level.getValue());
         int numberImgs = ini.imgs.size();
         int numberLinks = ini.links.size();
         String msg = "Foram encontradas " + numberImgs + " imagens em " + numberLinks + " links.";
@@ -206,7 +198,30 @@ public class Menu extends javax.swing.JFrame {
         
         
         JFrame f = new JFrame();
-        //JPanel f = new JPanel();
+        f.setTitle("Teste");
+        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        f.setSize(800, 500);
+        f.setLocationRelativeTo(null);
+        
+        JPanel panel = new JPanel(new GridLayout(0,5,10,10));
+        for(int i = 1; i<= 30; i++){
+            JButton button = new JButton("Button " + Integer.toString(i));
+            panel.add(button);
+        }
+        
+        final JScrollPane scroll = new JScrollPane(panel);
+         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+          scroll.setBounds(10,10,300,300);
+         
+         JPanel content = new JPanel(null);
+         content.setPreferredSize(new Dimension(600,400));
+         content.add(scroll);
+        f.setContentPane(content);
+        //f.add(panel);
+        f.pack();
+        f.setVisible(true);
+        
+        //JPanel pane = new JPanel(new GridLayout(ini.imgs.size() / 2, 2, 20, 25));
         //JPanel subPanel = new JPanel();
         
 
@@ -235,7 +250,7 @@ public class Menu extends javax.swing.JFrame {
         // GridLayout grid = (GridLayout)output.getLayout();
         // grid.setColumns(2);
         // grid.setRows(numberImgs/2);
-        for (String img : ini.imgs) {
+        /*for (String img : ini.imgs) {
             try {
                 Image image = null;
                 URL url = new URL(img);
@@ -255,26 +270,26 @@ public class Menu extends javax.swing.JFrame {
                                     Image.SCALE_DEFAULT));
                 }
                 lbl.setIcon(icon);
-                f.add(lbl);
+                pane.add(lbl);
             } catch (IllegalArgumentException | NullPointerException e) {
                 System.out.println("Erro: " + img);
             }
-        }
+        }*/
 
         
-        //GridLayout grid = new GridLayout();
-        //grid.setColumns(2);
-        //grid.setRows(ini.imgs.size()/2);
+        /*GridLayout grid = new GridLayout();
+        grid.setColumns(2);
+        grid.setRows(ini.imgs.size()/2);
   
         JScrollPane scroll = new JScrollPane();
          scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-         f.add(scroll);
+         //f.add(scroll);
                  
-        f.setLayout(new GridLayout(ini.imgs.size() / 2, 2, 20, 25));
+        f.setLayout(grid/*new GridLayout(ini.imgs.size() / 2, 2, 20, 25));
         f.setSize(1000, 500);
         f.setVisible(true);
 
-        this.pack();
+        this.pack();*/
 
         // System.out.println(ini.imgs);
         // System.out.println(ini.links);

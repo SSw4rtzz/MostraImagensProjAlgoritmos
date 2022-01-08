@@ -7,6 +7,7 @@ package projfinal;
 
 import java.awt.List;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -37,11 +38,21 @@ public class EDACrawler {
         
 
         if (dominio) {
+            
+            System.out.println("TESTE: " + dominioText);
+            System.out.println("TESTE2: " + url);
             try {
                 while (aux.hasNext()) {
                     String href = aux.next().attr("abs:href");
+                        if(href.contains("#")){
+                        String[] auxhref = href.split("#");
+                        href = auxhref[0];}
+                        else if(href.contains("?")){
+                           String[] auxhref = href.split("\\?");
+                           href = auxhref[0];
+                       }
                     
-                    if (href.length() > 1 && !payload.links.contains(href) && !href.contains("#") && href.contains(dominioText)) {
+                    if (href.length() > 1 && !payload.links.contains(href) && href.contains(dominioText)) {
                         payload.links.add(href);
                         valido = true;
                         System.out.println(href);
