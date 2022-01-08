@@ -180,8 +180,10 @@ public class Menu extends javax.swing.JFrame {
         int nivel = (int) level.getValue();
         EDACrawler eda = new EDACrawler();
         boolean dominio = flagDominio.isSelected();
-        Payload ini = eda.process(link, nivel, dominio);
-
+        Payload ini = eda.process(link, nivel, dominio); //Verifica repetidos e apaga
+        //System.out.println("Teste : " + ini.links.get(282));
+        ini=eda.repetido(ini);
+        
 
         /*
          * for(int i=1; i <= ini.links.size();i++){
@@ -196,7 +198,7 @@ public class Menu extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, msg);
 
         
-
+        
         JFrame f = new JFrame();
         //JPanel f = new JPanel();
         //JPanel subPanel = new JPanel();
@@ -248,7 +250,7 @@ public class Menu extends javax.swing.JFrame {
                 }
                 lbl.setIcon(icon);
                 f.add(lbl);
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException | NullPointerException e) {
                 System.out.println("Erro: " + img);
             }
         }
