@@ -180,7 +180,13 @@ public class Menu extends javax.swing.JFrame {
         int nivel = (int) level.getValue();
         EDACrawler eda = new EDACrawler();
         boolean dominio = flagDominio.isSelected();
-        Payload ini = eda.process(link, nivel, dominio); //Verifica repetidos e apaga
+        String[] urlCortado = link.split("/");
+        String dominioText = urlCortado[2];
+        if(urlCortado[2].contains("www")){
+           String[] dom = dominioText.split("www");
+           dominioText = dom[1];
+        }
+        Payload ini = eda.process(link, nivel, dominio, dominioText); //Verifica repetidos e apaga
         //System.out.println("Teste : " + ini.links.get(282));
         ini=eda.repetido(ini);
         

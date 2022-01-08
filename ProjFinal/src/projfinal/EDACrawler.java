@@ -25,7 +25,7 @@ public class EDACrawler {
     public EDACrawler() throws IOException {
     }
 
-    public Payload process(String url, int nivel, boolean dominio) throws IOException {
+    public Payload process(String url, int nivel, boolean dominio, String dominioText) throws IOException {
         Payload payload = new Payload();
         if (!url.endsWith("/")) {
             url += "/";
@@ -33,12 +33,6 @@ public class EDACrawler {
         Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36").get();
         Elements links = doc.select("a");
         Iterator<Element> aux = links.iterator();
-        String[] urlCortado = url.split("/");
-        String dominioText = urlCortado[2];
-        if(urlCortado[2].contains("www")){
-           String[] dom = dominioText.split("www");
-           dominioText = dom[1];
-        }
         boolean valido = false;
         
 
@@ -53,7 +47,7 @@ public class EDACrawler {
                         System.out.println(href);
                     }
                     if (nivel > 1 && !payload.links.contains(href)) {
-                        Payload recursiva = process(href,nivel-1,dominio);
+                        Payload recursiva = process(href,nivel-1,dominio, dominioText);
                         payload.links.addAll(recursiva.links);
                         payload.imgs.addAll(recursiva.imgs);
                     }
@@ -83,7 +77,7 @@ public class EDACrawler {
                         System.out.println(href);
                     }
                     if (nivel > 1) {
-                        Payload recursiva = process(href,nivel-1,dominio);
+                        Payload recursiva = process(href,nivel-1,dominio, dominioText);
                         payload.links.addAll(recursiva.links);
                         payload.imgs.addAll(recursiva.imgs);
                     }
@@ -102,26 +96,11 @@ public class EDACrawler {
                 }
             }
         }
-
         payload.html = doc.html();
         return payload;
     }
     
-    public Payload repetido(Payload ini){
-        
-        
-        /*Iterator<String> iter = ini.links.iterator();
-        while(iter.hasNext()){
-            String str = iter.next();
-                if(ini.links.contains(str)){
-                    count++;
-                }
-                if(count>1){
-                    iter.remove();
-            }
-        }*/
-        
-    
+    public Payload repetido(Payload ini){ 
     Set<String>set = new HashSet<>(ini.links);
     ini.links.clear();
     ini.links.addAll(set);
@@ -129,72 +108,6 @@ public class EDACrawler {
     Set<String>setImgs = new HashSet<>(ini.imgs);
     ini.imgs.clear();
     ini.imgs.addAll(setImgs);
-    
-    
-    /*while(j<=ini.links.size()){
-        int count = 0;
-        for(String i: ini.links){
-            if(ini.links.equals(i)){
-                    count++;
-                }
-            if(count>1){
-                teste.add(i);
-            }  
-        }
-        j++;
-    }
-    ini.links.removeAll(teste);
-    /*
-    
-        
-    while(j<ini.imgs.size()){
-        int count = 0;
-        for(String i: ini.imgs){
-            if(ini.imgs.contains(i)){
-                    count++;
-                }
-            if(count>1){
-                ini.imgs.remove(i);
-            }  
-        }
-        j++;
-    }
-            /*for(int j = 1; j<=282;j++){
-                if(ini.links.get(i).equals(ini.links.get(j))){
-                    count++;
-                }
-            }
-            
-
-        }*/
-        
-        /*for(int i = 1; i<ini.imgs.size()+1;i++){
-            for(int j = 1; j<ini.imgs.size()+1;j++){
-                if(ini.imgs.get(i).equals(ini.imgs.get(j))){
-                    count++;
-                }
-            }
-            if(count>1){
-                ini.imgs.remove(i);
-            }
-            count = 0;
-
-        }
-        /*Set<String> set = new HashSet<>(payload.links);
-        payload.links.clear();
-        payload.links.addAll(set);
-        
-        Set<String> setImgs = new HashSet<>(payload.imgs);
-        payload.imgs.clear();
-        payload.imgs.addAll(setImgs);
-        
-        /*teste.links.removeAll(new HashSet(payload.links));
-        teste.imgs.removeAll(new HashSet(payload.imgs));
-        Set<String> hashset = new LinkedHashSet(teste);
-        for(int i = 0; i<payload.links.size();i++){
-            set.add(payload);
-            
-        }*/
         return ini;
     }
 }
