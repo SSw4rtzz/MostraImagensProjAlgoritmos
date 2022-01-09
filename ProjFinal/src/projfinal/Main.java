@@ -7,7 +7,7 @@ package projfinal;
 import java.io.IOException;
 import javax.swing.JFrame;
 
-public class ProjFinal extends JFrame {
+public class Main extends JFrame {
     public static void main(String[] args) throws IOException {
           java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

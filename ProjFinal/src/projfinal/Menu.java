@@ -14,8 +14,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -190,9 +188,9 @@ public class Menu extends javax.swing.JFrame {
     
     Thread load = new Thread(){
         public void run(){
-            for(int i=0;i<=90;i++){
+            for(int i=0;i<=80;i++){
                 loading.setValue(i);
-                try{Thread.sleep(150);}
+                try{Thread.sleep(40);}
                 catch(Exception e){}
             }
         }
@@ -207,7 +205,7 @@ public class Menu extends javax.swing.JFrame {
         boolean dominio = flagDominio.isSelected();
         String[] urlCortado = link.split("/");
         String dominioText = urlCortado[2];
-        if(urlCortado[2].contains("www.")){
+        if(urlCortado[2].contains("www.") && dominio){
            String[] dom = dominioText.split("www.");
            dominioText = dom[1];
         }
@@ -216,8 +214,50 @@ public class Menu extends javax.swing.JFrame {
 
         int numberImgs = ini.imgs.size();
         int numberLinks = ini.links.size();
-        String msg = "Foram encontradas " + numberImgs + " imagens em " + numberLinks + " links.";
-        JOptionPane.showMessageDialog(this, msg);
+        ImageIcon iconInfo = new ImageIcon("./src/Assets/info.png");
+        Image imageResize = iconInfo.getImage();
+        Image iconAux = imageResize.getScaledInstance(100,100, java.awt.Image.SCALE_SMOOTH);
+        iconInfo = new ImageIcon(iconAux);
+        String msg = "As imagens serão sempre mostradas a não ser que feche o programa\nForam encontradas " + numberImgs + " imagens e " + numberLinks + " links.";
+        
+        String[] options = {"Fechar","Fechar programa","Mostrar Links"};
+        int resposta = JOptionPane.showOptionDialog(null, msg, "Menu", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, iconInfo /*icon*/, options, options[0]);
+        
+        switch (resposta){
+            case 0:
+                break;
+            case 1:
+                System.exit(0);
+            case 2:
+                JFrame frame = new JFrame();
+                frame.setTitle("Links");
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.setSize(900, 500);
+                frame.setLocationRelativeTo(null);
+        
+                JPanel panel = new JPanel(new GridLayout(0,1,10,10));
+        
+            for(String lin:ini.links){
+                            
+                JLabel lbl = new JLabel(lin);
+                panel.add(lbl);
+            }
+        /* Dimensões */
+        int x = 700;
+        int y = 500;
+        
+        final JScrollPane scroll = new JScrollPane(panel);
+         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+         scroll.setBounds(5,5, x-10, y-10);
+         
+         JPanel content = new JPanel(null);
+         content.setPreferredSize(new Dimension(x,y));
+         content.add(scroll);
+        frame.setContentPane(content);
+        frame.pack();
+        frame.setVisible(true);
+        }
+        
         JFrame f = new JFrame();
         f.setTitle("Imagens");
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -276,6 +316,10 @@ public class Menu extends javax.swing.JFrame {
                 bImage = ImageIO.read(url);
                 String[] imgSplit = img.split("/");
                 String nome = imgSplit[imgSplit.length -1];
+                if(nome.contains("?")){
+                    String[] nomeAux = nome.split("\\?");
+                    nome = nomeAux[0];
+                }
                 if(img.contains(".png")){
                     ImageIO.write(bImage, "png", new File("./src/offline/" + urlCortado[2]+ "_" +nivel + "/" + nome));
                 }else if(img.contains(".gif")){
@@ -287,11 +331,12 @@ public class Menu extends javax.swing.JFrame {
         
         loading.setValue(100);
         load = new Thread();
-        
     }
 
 
     public void programaOffline(){
+        load.interrupt();//Para loading
+        load = new Thread();
         loading.setValue(5);
         String link = txtLink.getText();
         int nivel = (int) level.getValue();
