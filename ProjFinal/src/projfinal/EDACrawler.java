@@ -32,8 +32,6 @@ public class EDACrawler {
         Iterator<Element> aux = links.iterator();
         boolean valido = false;
         if (dominio) {            
-            System.out.println("TESTE: " + dominioText);
-            System.out.println("TESTE2: " + url);
             try {
                 while (aux.hasNext()) {
                     String href = aux.next().attr("abs:href");

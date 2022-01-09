@@ -8,6 +8,9 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -57,6 +60,7 @@ public class Menu extends javax.swing.JFrame {
         btnIPT = new javax.swing.JButton();
         txtTema = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        loading = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Projeto");
@@ -71,7 +75,7 @@ public class Menu extends javax.swing.JFrame {
         });
 
         txtLink.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtLink.setText("Link");
+        txtLink.setText("https://");
         txtLink.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtLinkKeyPressed(evt);
@@ -99,12 +103,13 @@ public class Menu extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtLink)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(loading, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSearch, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtLink, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(flagDominio)
@@ -139,7 +144,8 @@ public class Menu extends javax.swing.JFrame {
                 .addComponent(txtLink, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(loading, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -148,9 +154,9 @@ public class Menu extends javax.swing.JFrame {
     private void txtLinkKeyPressed(java.awt.event.KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             try {
-                programa(); //Corre a função programa, que contem a maior parte do código
+                programaOnline(); //Corre a função programa, que contem a maior parte do código
             } catch (IOException ex) {
-                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                programaOffline();
             }
         }
 
@@ -163,9 +169,9 @@ public class Menu extends javax.swing.JFrame {
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {
         try {
             // GEN-FIRST:event_btnSearchActionPerformed
-            programa(); //Corre a função programa, que contem a maior parte do código
+            programaOnline(); //Corre a função programa, que contem a maior parte do código
         } catch (IOException ex) {
-            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            programaOffline();
         }
     }// GEN-LAST:event_btnSearchActionPerformed
 
@@ -176,11 +182,24 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JSpinner level;
+    private javax.swing.JProgressBar loading;
     private javax.swing.JTextField txtLink;
     private javax.swing.JTextField txtTema;
     // End of variables declaration//GEN-END:variables
 
-    public void programa() throws MalformedURLException, IOException {
+    
+    Thread load = new Thread(){
+        public void run(){
+            for(int i=0;i<=90;i++){
+                loading.setValue(i);
+                try{Thread.sleep(150);}
+                catch(Exception e){}
+            }
+        }
+    };
+    
+    public void programaOnline() throws MalformedURLException, IOException {
+        load.start();
         String link = txtLink.getText();
         int nivel = (int) level.getValue();
         EDACrawler eda = new EDACrawler();
@@ -199,15 +218,16 @@ public class Menu extends javax.swing.JFrame {
         int numberLinks = ini.links.size();
         String msg = "Foram encontradas " + numberImgs + " imagens em " + numberLinks + " links.";
         JOptionPane.showMessageDialog(this, msg);
-        
         JFrame f = new JFrame();
-        f.setTitle("Teste");
+        f.setTitle("Imagens");
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         f.setSize(800, 500);
         f.setLocationRelativeTo(null);
         
         JPanel panel = new JPanel(new GridLayout(0,5,10,10));
-         
+        load.interrupt();//Para loading
+        
+        loading.setValue(90);
         for (String img : ini.imgs) {
             try {
                 Image image = null;
@@ -229,18 +249,18 @@ public class Menu extends javax.swing.JFrame {
                 }
                 lbl.setIcon(icon);
                 panel.add(lbl);
+    
             } catch (IllegalArgumentException | NullPointerException e) {
                 System.out.println("Erro: " + img);
             }
         }
-        
         /* Dimensões */
         int x = 700;
         int y = 500;
         
         final JScrollPane scroll = new JScrollPane(panel);
          scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-          scroll.setBounds(5,5, x-10, y-10);
+         scroll.setBounds(5,5, x-10, y-10);
          
          JPanel content = new JPanel(null);
          content.setPreferredSize(new Dimension(x,y));
@@ -248,5 +268,112 @@ public class Menu extends javax.swing.JFrame {
         f.setContentPane(content);
         f.pack();
         f.setVisible(true);
+        
+        BufferedImage bImage = null;
+        new File("./src/offline/" + urlCortado[2]+ "_" + nivel).mkdirs();
+        for (String img : ini.imgs) {
+                URL url = new URL(img);
+                bImage = ImageIO.read(url);
+                String[] imgSplit = img.split("/");
+                String nome = imgSplit[imgSplit.length -1];
+                if(img.contains(".png")){
+                    ImageIO.write(bImage, "png", new File("./src/offline/" + urlCortado[2]+ "_" +nivel + "/" + nome));
+                }else if(img.contains(".gif")){
+                    ImageIO.write(bImage, "gif", new File("./src/offline/" + urlCortado[2]+ "_" + nivel + "/" + nome));
+                }else if(img.contains(".jpg")){
+                    ImageIO.write(bImage, "jpg", new File("./src/offline/" + urlCortado[2]+ "_" +nivel + "/" + nome));
+                }
+        }
+        
+        loading.setValue(100);
+        load = new Thread();
+        
+    }
+
+
+    public void programaOffline(){
+        loading.setValue(5);
+        String link = txtLink.getText();
+        int nivel = (int) level.getValue();
+        String tema = txtTema.getText();
+        String[] urlCortado = link.split("/");
+
+        File dir = new File("./src/offline/" + urlCortado[2] + "_" + nivel);
+        System.out.println(urlCortado[2] + "_" + nivel);
+        String[] EXTENSIONS = new String[]{
+            "gif","png","bmp" 
+        };
+         loading.setValue(30);
+        FilenameFilter IMAGE_FILTER = new FilenameFilter(){
+           @Override
+           public boolean accept(File dir, String nome){
+               for (String ext : EXTENSIONS){
+                   if(nome.endsWith("." + ext)){
+                       return(true);
+                   }
+               }
+               return(false);
+           }
+        };
+        loading.setValue(60);    
+        JFrame frame = new JFrame();
+        frame.setTitle("Imagens");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(800, 500);
+        frame.setLocationRelativeTo(null);
+        
+        JPanel panel = new JPanel(new GridLayout(0,5,10,10));
+        
+        if(dir.isDirectory()){
+            for(File f:dir.listFiles(IMAGE_FILTER)){
+                BufferedImage img = null;
+            
+            try{
+                img = ImageIO.read(f);
+                JLabel lbl = new JLabel();
+                ImageIcon icon = null;
+                int iWidth = img.getWidth(null);
+                int iHeight = img.getHeight(null);
+                int newWidth = 100;
+                if (iWidth > iHeight) {
+                    icon = new ImageIcon(
+                            img.getScaledInstance(newWidth, (newWidth * iHeight) / iWidth,
+                                    Image.SCALE_DEFAULT));
+                } else {
+                    icon = new ImageIcon(
+                            img.getScaledInstance((newWidth * iWidth) / iHeight, newWidth,
+                                    Image.SCALE_DEFAULT));
+                }
+                lbl.setIcon(icon);
+                panel.add(lbl);
+                
+                
+                System.out.println("image: " + f.getName());
+                System.out.println("size: " + f.length());
+                
+            } catch(IllegalArgumentException | NullPointerException | IOException e){
+                System.out.println("Erro: " + img);
+            }
+            }
+        }
+                loading.setValue(90);    
+        /* Dimensões */
+        int x = 700;
+        int y = 500;
+        
+        final JScrollPane scroll = new JScrollPane(panel);
+         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+         scroll.setBounds(5,5, x-10, y-10);
+         
+         JPanel content = new JPanel(null);
+         content.setPreferredSize(new Dimension(x,y));
+         content.add(scroll);
+        frame.setContentPane(content);
+        frame.pack();
+        frame.setVisible(true);
+        loading.setValue(100);    
     }
 }
+
+
+                
